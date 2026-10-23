@@ -1,0 +1,361 @@
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wikelo Polaris // Temere V</title>
+<style>
+:root {
+  --bg: #090c10;
+  --panel: #11171d;
+  --panel2: #151e26;
+  --border: #293741;
+  --text: #e4e9ec;
+  --muted: #81909b;
+  --accent: #e8a94c;
+  --green: #7cc9a1;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background:
+    radial-gradient(ellipse at 50% 0%, #1a2933 0%, transparent 55%),
+    var(--bg);
+  color: var(--text);
+  font: 14px/1.5 system-ui, sans-serif;
+}
+header {
+  border-bottom: 1px solid var(--border);
+  background: #090c10eF;
+  padding: 17px max(20px, calc((100% - 1120px)/2));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.brand { font-weight: 900; letter-spacing: 2px; }
+.brand span { color: var(--accent); }
+nav { color: var(--muted); font-size: 11px; letter-spacing: 1px; }
+main { max-width: 1120px; margin: auto; padding: 35px 20px 60px; }
+.back { color: var(--muted); margin-bottom: 28px; }
+.eyebrow {
+  color: var(--accent); letter-spacing: 2.5px;
+  font-size: 10px; font-weight: 800;
+}
+h1 { font-size: clamp(30px, 5vw, 48px); line-height: 1.1; margin: 10px 0; }
+h1 span { color: var(--accent); }
+.intro { color: var(--muted); max-width: 650px; }
+.meta {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  margin: 22px 0;
+}
+.tag {
+  border: 1px solid var(--border); background: #10161c;
+  padding: 7px 11px; font-size: 10px;
+  letter-spacing: 1px; color: #b5c0c8;
+}
+.tag.reward { color: var(--accent); border-color: #75552d; }
+.panel {
+  background: linear-gradient(145deg, #151d24, #0e1318);
+  border: 1px solid var(--border);
+  padding: 22px; margin: 20px 0;
+}
+.progress-head {
+  display: flex; justify-content: space-between;
+  gap: 15px; align-items: center; flex-wrap: wrap;
+}
+.kicker { color: var(--muted); font-size: 10px; letter-spacing: 2px; }
+.big { font-size: 29px; font-weight: 800; }
+.big small { font-size: 13px; color: var(--muted); }
+.track { height: 7px; background: #27313a; margin: 18px 0 12px; }
+.fill {
+  height: 100%; width: 0; background: var(--accent);
+  box-shadow: 0 0 14px #e8a94c55; transition: width .2s;
+}
+.progress-foot {
+  display: flex; justify-content: space-between; flex-wrap: wrap;
+  color: var(--muted); font-size: 12px; gap: 8px;
+}
+.toolbar {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 12px; margin: 28px 0 18px;
+}
+h2 { font-size: 17px; margin: 0; }
+.controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+button, input { font: inherit; }
+button {
+  cursor: pointer; padding: 9px 12px;
+  border: 1px solid var(--border); background: var(--panel);
+  color: var(--text);
+}
+button:hover { border-color: var(--accent); }
+button.active { border-color: var(--accent); color: var(--accent); }
+.section-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 13px 15px; background: #141c23;
+  border: 1px solid var(--border); margin-top: 18px;
+}
+.section-head span { color: var(--muted); font-size: 11px; }
+.items { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 9px; margin-top: 9px; }
+.item {
+  background: var(--panel); border: 1px solid var(--border);
+  padding: 15px; min-width: 0;
+}
+.item.done { border-color: #365849; background: #101c19; }
+.item-top { display: flex; justify-content: space-between; gap: 10px; }
+.item-name { font-weight: 700; overflow-wrap: anywhere; }
+.item-desc { color: var(--muted); font-size: 11px; margin-top: 4px; }
+.check {
+  flex-shrink: 0; accent-color: var(--green);
+  width: 17px; height: 17px; cursor: pointer;
+}
+.item-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 12px; margin-top: 15px; padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+.qty { display: flex; align-items: center; gap: 7px; }
+.qty input {
+  width: 68px; padding: 7px; background: #090e12;
+  color: var(--text); border: 1px solid var(--border);
+}
+.qty input:focus { outline: 1px solid var(--accent); }
+.required { color: var(--muted); font-size: 12px; }
+.remaining { color: var(--accent); font-size: 11px; text-align: right; }
+.done .remaining { color: var(--green); }
+.note { color: var(--muted); font-size: 12px; margin-top: 24px; }
+footer {
+  border-top: 1px solid var(--border); padding: 24px 20px;
+  text-align: center; color: var(--muted); font-size: 11px;
+  letter-spacing: 1px;
+}
+@media(max-width:650px) {
+  header { padding: 15px 18px; }
+  nav { display: none; }
+  main { padding: 25px 14px 40px; }
+  .panel { padding: 16px; }
+  .items { grid-template-columns: 1fr; }
+  .toolbar { align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">Temere <span>V</span></div>
+  <nav>TOOLS　 /　 MANIFEST　 /　 STAR CITIZEN</nav>
+</header>
+
+<main>
+  <div class="back">← All tools / Collection manifest</div>
+  <div class="eyebrow">Temere V / COLLECTION MANIFEST</div>
+  <h1>Wikelo <span>Polaris</span> checklist.</h1>
+  <p class="intro">
+    One ship. Every item accounted for. Enter what you have,
+    or check an item to mark its full quantity collected.
+  </p>
+
+  <div class="meta">
+    <div class="tag">PATCH 4.10.2 · BUILD 12878398</div>
+    <div class="tag reward">REWARD: 1 POLARIS + 1,000 REP</div>
+  </div>
+
+  <section class="panel">
+    <div class="progress-head">
+      <div>
+        <div class="kicker">MANIFEST PROGRESS</div>
+        <div class="big"><span id="complete">0</span><small> / 20 complete</small></div>
+      </div>
+      <div class="big" style="color:var(--accent)" id="percent">0%</div>
+    </div>
+    <div class="track"><div class="fill" id="fill"></div></div>
+    <div class="progress-foot">
+      <span id="left">20 requirements still to finish.</span>
+      <span>Each requirement contributes equally.</span>
+    </div>
+  </section>
+
+  <div class="toolbar">
+    <h2>Collection manifest</h2>
+    <div class="controls">
+      <button id="filter">Show remaining only</button>
+      <button id="reset">Reset checklist</button>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <h2>Trade items</h2><span>COLLECTED / REQUIRED</span>
+  </div>
+  <div class="items" id="trade"></div>
+
+  <div class="section-head">
+    <h2>ASD samples</h2><span>9 DISTINCT SAMPLES · 1 EACH</span>
+  </div>
+  <div class="items" id="samples"></div>
+
+  <p class="note">
+    Special Wikelo favors require 24 SCU Quantanium each.
+    A total of 360 SCU is needed for all 15 favors.
+    Progress is saved locally in this browser.
+  </p>
+
+  <section class="panel">
+    <div class="eyebrow">BEFORE YOU MAKE THE TRADE</div>
+    <h2 style="margin-top:10px">Prepare your manifest.</h2>
+    <p class="intro">
+      Complete Wikelo's introduction, then use the physical
+      Polaris job board. The contract is not shareable and its
+      template has a five-minute deadline. Prepare your items
+      before accepting.
+    </p>
+  </section>
+</main>
+<footer>Temere V.</footer>
+
+<script>
+const tradeItems = [
+  ["Wikelo favors",50,""],
+  ["Special Wikelo favors / Polaris bits",15,"24 SCU Quantanium per favor"],
+  ["Compboard #5 - Ruin Station CZ",10,""],
+  ["Carinite",20,""],
+  ["Irradiated apex Valakkar fang",20,""],
+  ["Mercenary scrip (MG SCRIP)",20,""],
+  ["Ace Interceptor Helmet",15,""],
+  ["Irradiated apex Valakkar pearl",15,"Tier 1 · irradiated_super_01"],
+  ["UEE 6th Platoon Medal (Pristine)",15,""],
+  ["Pure Carinite",15,""],
+  ["ASD Secure Drives",15,""]
+];
+const sampleItems = [
+  ["ASD sample PWL1",1,"Grav Lab"],
+  ["ASD sample PWL2",1,"Grav Lab"],
+  ["ASD sample PWL3",1,"Grav Lab"],
+  ["ASD sample RGL1",1,"Medical Lab"],
+  ["ASD sample RGL2",1,"Medical Lab"],
+  ["ASD sample RGL3",1,"Medical Lab"],
+  ["ASD sample XTL1",1,"Biomass Processor"],
+  ["ASD sample XTL2",1,"Biomass Processor"],
+  ["ASD sample XTL3",1,"Biomass Processor"]
+];
+const all = [...tradeItems, ...sampleItems];
+const STORAGE = "sc-haulers-wikelo-polaris-v1";
+let state = {};
+let remainingOnly = false;
+
+try {
+  state = JSON.parse(localStorage.getItem(STORAGE) || "{}") || {};
+} catch { state = {}; }
+
+function quantity(i) {
+  return Math.max(0, Math.min(all[i][1], Number(state[i]) || 0));
+}
+function save() {
+  try { localStorage.setItem(STORAGE, JSON.stringify(state)); }
+  catch {}
+}
+function renderGroup(items, container, offset) {
+  container.innerHTML = "";
+  items.forEach((item, localIndex) => {
+    const i = offset + localIndex;
+    const [name, required, desc] = item;
+    const have = quantity(i);
+    if (remainingOnly && have >= required) return;
+
+    const card = document.createElement("article");
+    card.className = "item" + (have >= required ? " done" : "");
+    const top = document.createElement("div");
+    top.className = "item-top";
+
+    const info = document.createElement("div");
+    const title = document.createElement("div");
+    title.className = "item-name";
+    title.textContent = name;
+    info.appendChild(title);
+
+    if (desc) {
+      const description = document.createElement("div");
+      description.className = "item-desc";
+      description.textContent = desc;
+      info.appendChild(description);
+    }
+
+    const check = document.createElement("input");
+    check.type = "checkbox";
+    check.className = "check";
+    check.checked = have >= required;
+    check.setAttribute("aria-label", "Markeer " + name + " als compleet");
+    check.addEventListener("change", () => {
+      state[i] = check.checked ? required : 0;
+      save();
+      render();
+    });
+    top.append(info, check);
+
+    const bottom = document.createElement("div");
+    bottom.className = "item-bottom";
+
+    const qty = document.createElement("div");
+    qty.className = "qty";
+    const input = document.createElement("input");
+    input.type = "number";
+    input.min = "0";
+    input.max = String(required);
+    input.step = "1";
+    input.value = String(have);
+    input.setAttribute("aria-label", name + " verzameld");
+    input.addEventListener("change", () => {
+      const parsed = Number(input.value);
+      state[i] = Number.isFinite(parsed)
+        ? Math.max(0, Math.min(required, Math.floor(parsed)))
+        : 0;
+      save();
+      render();
+    });
+    const requiredLabel = document.createElement("span");
+    requiredLabel.className = "required";
+    requiredLabel.textContent = "/ " + required;
+    qty.append(input, requiredLabel);
+
+    const remaining = document.createElement("div");
+    remaining.className = "remaining";
+    remaining.textContent = have >= required
+      ? "COMPLETE"
+      : (required - have) + " to go";
+
+    bottom.append(qty, remaining);
+    card.append(top, bottom);
+    container.appendChild(card);
+  });
+}
+function render() {
+  renderGroup(tradeItems, document.getElementById("trade"), 0);
+  renderGroup(sampleItems, document.getElementById("samples"), tradeItems.length);
+
+  const complete = all.reduce((sum, item, i) =>
+    sum + (quantity(i) >= item[1] ? 1 : 0), 0);
+  const pct = Math.round(complete / all.length * 100);
+
+  document.getElementById("complete").textContent = complete;
+  document.getElementById("percent").textContent = pct + "%";
+  document.getElementById("fill").style.width = pct + "%";
+  document.getElementById("left").textContent =
+    (all.length - complete) + " requirements still to finish.";
+
+  document.getElementById("filter").classList.toggle("active", remainingOnly);
+  document.getElementById("filter").textContent =
+    remainingOnly ? "Show all items" : "Show remaining only";
+}
+document.getElementById("filter").addEventListener("click", () => {
+  remainingOnly = !remainingOnly;
+  render();
+});
+document.getElementById("reset").addEventListener("click", () => {
+  if (!confirm("Reset all collected quantities?")) return;
+  state = {};
+  save();
+  render();
+});
+render();
+</script>
+</body>
+</html>
